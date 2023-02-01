@@ -16,9 +16,11 @@ export const App: React.FC = () => {
         setLoading(true)
         const data = await fetch("https://rickandmortyapi.com/api/character",);
         const response = await data.json();
-        setNextApi(response.info.next)
-        setResult(response.results)
-        setLoading(false)
+        if (data.ok) {
+          setNextApi(response.info.next)
+          setResult(response.results)
+          setLoading(false)
+        }
       } catch (e: unknown) {
         const error = e as Error
         setLoading(false)
@@ -53,10 +55,12 @@ const fetchNextPage = () => {
       setLoading(true)
       const data = await fetch(`${nextApi}`)
       const response = await data.json();
-      setNextApi(response.info.next)
-      const newArray = result.concat(response.results)
-      setResult(newArray)
-      setLoading(false)
+      if (data.ok) {
+        setNextApi(response.info.next)
+        const newArray = result.concat(response.results)
+        setResult(newArray)
+        setLoading(false)
+      }
     } catch (e: unknown) {
       const error = e as Error
       setLoading(false)
